@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>十五日で、日本語。</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23BC3A32' stroke-width='7'/><text x='50' y='66' font-size='48' text-anchor='middle' fill='%23BC3A32' font-family='serif' font-weight='bold'>済</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html">← 目次に戻る(回到目录)</a>
+    <span>已集章 <span class="count" id="topbar-count">0</span> / 15</span>
+  </div>
+</div>
+
+<main class="wrap" id="app"></main>
+
+<footer class="site-footer">
+  <span class="serif">東大を救えるのは、君だけだ。</span><br>
+  能拯救东大的,只有你了。
+</footer>
+
+<script src="data.js"></script>
+<script>
+  // 漢字[かんじ] → <ruby>漢字<rt>かんじ</rt></ruby>
+  function rubyfy(s) {
+    return s.replace(/([一-龯々〆ヵヶ0-9A-Za-zー]+)\[([^\]]+)\]/g,
+      "<ruby>$1<rt>$2</rt></ruby>");
+  }
+
+  const params = new URLSearchParams(location.search);
+  const dayNum = parseInt(params.get("d") || "1", 10);
+  const d = DAYS.find(x => x.day === dayNum) || DAYS[0];
+  document.title = `第${d.kanji}日 ${d.titleJp}｜十五日で、日本語。`;
+
+  const stamps = JSON.parse(localStorage.getItem("nihongo15.stamps") || "[]");
+  const done = stamps.includes(d.day);
+
+  const prev = DAYS.find(x => x.day === d.day - 1);
+  const next = DAYS.find(x => x.day === d.day + 1);
+
+  document.getElementById("app").innerHTML = `
+    <header class="day-head">
+      <div class="no-vert" aria-hidden="true">第${d.kanji}日</div>
+      <div>
+        <h1>${d.titleJp}</h1>
+        <p class="sub">${d.titleCn}</p>
+      </div>
+    </header>
+
+    <aside class="cheer-card">${d.cheer}</aside>
+
+    <section class="sec">
+      <div class="sec-head">
+        <h2>単語 <small>今日的单词 ・ ${d.vocab.length} 个</small></h2>
+        <button class="quiz-toggle" id="quiz-btn" type="button">自测模式:遮住意思</button>
+      </div>
+      <table class="vocab-table" id="vocab-table">
+        ${d.vocab.map(v => `<tr>
+          <td class="w">${v.w}</td>
+          <td class="r">${v.r}</td>
+          <td class="m">${v.m}</td>
+        </tr>`).join("")}
+      </table>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><h2>文法 <small>今日的语法 ・ ${d.grammar.length} 个</small></h2></div>
+      ${d.grammar.map(g => `
+        <article class="gcard">
+          <h3>${g.title}</h3>
+          <p>${g.body}</p>
+          ${g.examples.map(e => `<div class="ex">
+            <p class="jp">${rubyfy(e.jp)}</p>
+            <p class="cn">${e.cn}</p>
+          </div>`).join("")}
+        </article>`).join("")}
+    </section>
+
+    <nav class="day-nav">
+      ${prev
+        ? `<a class="nav-link" href="day.html?d=${prev.day}">← 第${prev.kanji}日</a>`
+        : `<a class="nav-link ghost" aria-hidden="true">←</a>`}
+      <button class="stamp-btn ${done ? "done" : ""}" id="stamp-btn" type="button">
+        ${done ? "済 ── 今日已盖章" : "学完了!盖章 ✦"}
+      </button>
+      ${next
+        ? `<a class="nav-link" href="day.html?d=${next.day}">第${next.kanji}日 →</a>`
+        : `<a class="nav-link" href="index.html">查看全部集章 →</a>`}
+    </nav>
+  `;
+
+  function refreshCount() {
+    const s = JSON.parse(localStorage.getItem("nihongo15.stamps") || "[]");
+    document.getElementById("topbar-count").textContent = s.length;
+  }
+  refreshCount();
+
+  // 盖章
+  document.getElementById("stamp-btn").addEventListener("click", () => {
+    const s = JSON.parse(localStorage.getItem("nihongo15.stamps") || "[]");
+    if (s.includes(d.day)) return;
+    s.push(d.day);
+    localStorage.setItem("nihongo15.stamps", JSON.stringify(s));
+    const btn = document.getElementById("stamp-btn");
+    btn.classList.add("done");
+    btn.textContent = "済 ── 今日已盖章";
+    refreshCount();
+  });
+
+  // 自测模式
+  const quizBtn = document.getElementById("quiz-btn");
+  const table = document.getElementById("vocab-table");
+  quizBtn.addEventListener("click", () => {
+    const on = document.body.classList.toggle("quiz-on");
+    quizBtn.textContent = on ? "退出自测模式" : "自测模式:遮住意思";
+    table.querySelectorAll("tr").forEach(tr => tr.classList.remove("revealed"));
+  });
+  table.addEventListener("click", e => {
+    if (!document.body.classList.contains("quiz-on")) return;
+    const tr = e.target.closest("tr");
+    if (tr) tr.classList.add("revealed");
+  });
+</script>
+</body>
+</html>

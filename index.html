@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>十五日で、日本語。｜15天日语速成 · 东大应援版</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='none' stroke='%23BC3A32' stroke-width='7'/><text x='50' y='66' font-size='48' text-anchor='middle' fill='%23BC3A32' font-family='serif' font-weight='bold'>済</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="cover">
+  <div class="cover-left">
+    <p class="cover-eyebrow">JAPANESE IN 15 DAYS ・ 東大応援版</p>
+    <p class="cover-cn">写给未来的东大生:<br>十五天,把日语的地基打好。</p>
+    <p class="cover-note">
+      每天一页:先读一句应援,再背一组单词,啃三个语法。
+      学完就在这一页盖一个红章——十五个章集满的那天,
+      你会发现日语已经悄悄站在你这边了。
+    </p>
+    <p class="cover-progress">已集章 <b id="progress-count">0</b> / 15</p>
+    <div id="complete-slot"></div>
+  </div>
+  <h1 class="cover-title">十五日で、<br><span class="blue">日本語</span>。</h1>
+  <div class="cover-hanko" aria-hidden="true">東大は<br>君を待つ</div>
+</header>
+
+<main class="wrap rally">
+  <div class="rally-head">
+    <h2>スタンプラリー</h2>
+    <span>集章挑战 ── 每学完一天,盖一个章</span>
+  </div>
+  <nav class="day-grid" id="day-grid" aria-label="15天目录"></nav>
+</main>
+
+<footer class="site-footer">
+  <span class="serif">東大を救えるのは、君だけだ。</span><br>
+  能拯救东大的,只有你了。
+</footer>
+
+<script src="data.js"></script>
+<script>
+  const stamps = JSON.parse(localStorage.getItem("nihongo15.stamps") || "[]");
+
+  const grid = document.getElementById("day-grid");
+  grid.innerHTML = DAYS.map(d => {
+    const done = stamps.includes(d.day);
+    return `<a class="day-card ${done ? "stamped" : ""}" href="day.html?d=${d.day}">
+      <p class="no">第${d.kanji}日</p>
+      <p class="jp">${d.titleJp}</p>
+      <p class="cn">${d.titleCn}</p>
+      <span class="stamp" aria-hidden="true">済</span>
+    </a>`;
+  }).join("");
+
+  document.getElementById("progress-count").textContent = stamps.length;
+
+  if (stamps.length === 15) {
+    document.getElementById("complete-slot").innerHTML =
+      `<p class="complete-banner">全15章、制覇!🌸 桜咲く——十五天全部走完了,接下来轮到东大紧张了。</p>`;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+/* ── 十五日で、日本語。──
+   palette: 和紙白 / 墨 / 淡青(東大カラー) / 朱印红 / 生成り線 */
+:root {
+  --paper: #FBF8F0;
+  --paper-deep: #F2EDDF;
+  --ink: #26262B;
+  --ink-soft: #5A5A62;
+  --tansei: #2E7EA6;       /* 東大・淡青 */
+  --tansei-deep: #1C5C7D;
+  --tansei-wash: #E1EEF5;
+  --hanko: #BC3A32;        /* 朱印 */
+  --hanko-soft: #F5E3E1;
+  --line: #E2DAC7;
+  --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Zen Kaku Gothic New", "Hiragino Sans", "PingFang SC", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.8;
+  /* 和纸质感:极淡的横向帘纹 */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 27px,
+    rgba(38, 38, 43, 0.018) 27px 28px
+  );
+}
+
+.serif { font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif; }
+
+a { color: var(--tansei-deep); text-decoration: none; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--tansei);
+  outline-offset: 3px;
+}
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+/* ───────────── cover ───────────── */
+.cover {
+  min-height: 78vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 56px 20px 40px;
+  max-width: 860px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.cover-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+  max-width: 480px;
+}
+
+.cover-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  color: var(--tansei-deep);
+  margin-bottom: 18px;
+}
+
+.cover-cn {
+  font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+  font-size: clamp(24px, 4.6vw, 36px);
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.cover-note {
+  color: var(--ink-soft);
+  font-size: 15px;
+  max-width: 40em;
+  margin-bottom: 28px;
+}
+
+.cover-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--tansei-deep);
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 18px;
+  width: fit-content;
+}
+.cover-progress b { font-size: 18px; }
+
+/* 竖排大标题 */
+.cover-title {
+  writing-mode: vertical-rl;
+  font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+  font-weight: 800;
+  font-size: clamp(44px, 9vw, 84px);
+  line-height: 1.28;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  padding: 8px 4px 8px 18px;
+  border-left: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.cover-title .blue { color: var(--tansei); }
+
+.cover-hanko {
+  position: absolute;
+  right: 14px;
+  bottom: 34px;
+  width: 84px;
+  height: 96px;
+  border: 3px solid var(--hanko);
+  border-radius: 8px;
+  color: var(--hanko);
+  font-family: "Shippori Mincho", serif;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(-6deg);
+  opacity: 0.88;
+  letter-spacing: 0.1em;
+}
+
+/* ───────────── stamp rally ───────────── */
+.rally { padding: 36px 0 80px; }
+
+.rally-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-top: 2px solid var(--ink);
+  padding-top: 18px;
+  margin-bottom: 26px;
+}
+.rally-head h2 {
+  font-family: "Shippori Mincho", serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+.rally-head span { color: var(--ink-soft); font-size: 13px; letter-spacing: 0.12em; }
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.day-card {
+  position: relative;
+  display: block;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 18px 16px;
+  color: var(--ink);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
+}
+.day-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--tansei-wash);
+}
+.day-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(28, 92, 125, 0.10);
+  border-color: var(--tansei);
+}
+
+.day-card .no {
+  font-family: "Shippori Mincho", serif;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--tansei-deep);
+  margin-bottom: 6px;
+}
+.day-card .jp {
+  font-family: "Shippori Mincho", serif;
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.day-card .cn { font-size: 13px; color: var(--ink-soft); }
+
+/* 集章印 */
+.stamp {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 46px;
+  height: 46px;
+  border: 2.5px solid var(--hanko);
+  border-radius: 50%;
+  color: var(--hanko);
+  font-family: "Shippori Mincho", serif;
+  font-weight: 800;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-12deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.stamp::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  border: 1px solid rgba(188, 58, 50, 0.4);
+}
+.stamped .stamp { opacity: 0.9; }
+
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: rotate(-12deg) scale(2.2); }
+  60%  { opacity: 1; transform: rotate(-12deg) scale(0.92); }
+  100% { opacity: 0.9; transform: rotate(-12deg) scale(1); }
+}
+.stamp.fresh { animation: stamp-in 0.45s ease-out forwards; }
+
+/* ───────────── day page ───────────── */
+.topbar {
+  border-bottom: 1px solid var(--line);
+  background: rgba(251, 248, 240, 0.92);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+.topbar .count { color: var(--hanko); font-weight: 700; }
+
+.day-head {
+  display: flex;
+  gap: 26px;
+  align-items: flex-start;
+  padding: 46px 0 10px;
+}
+.day-head .no-vert {
+  writing-mode: vertical-rl;
+  font-family: "Shippori Mincho", serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--tansei);
+  letter-spacing: 0.18em;
+  border-right: 1px solid var(--line);
+  padding-right: 16px;
+  flex-shrink: 0;
+  min-height: 120px;
+}
+.day-head h1 {
+  font-family: "Shippori Mincho", serif;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+.day-head .sub { color: var(--ink-soft); font-size: 16px; margin-top: 4px; }
+
+/* 应援卡:手写便条风 */
+.cheer-card {
+  margin: 26px 0 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 24px 20px 58px;
+  position: relative;
+  font-family: "Shippori Mincho", serif;
+  font-size: 16.5px;
+  line-height: 2;
+}
+.cheer-card::before {
+  content: "応援";
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  writing-mode: vertical-rl;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #fff;
+  background: var(--hanko);
+  padding: 8px 4px;
+  border-radius: 3px;
+}
+.cheer-card em { font-style: normal; color: var(--tansei-deep); }
+
+/* section */
+.sec { padding: 34px 0 6px; }
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 2px solid var(--ink);
+  padding-top: 14px;
+  margin-bottom: 18px;
+}
+.sec-head h2 {
+  font-family: "Shippori Mincho", serif;
+  font-size: 21px;
+  font-weight: 700;
+}
+.sec-head h2 small {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 400;
+  margin-left: 10px;
+  letter-spacing: 0.1em;
+}
+
+/* vocab table */
+.quiz-toggle {
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--tansei-deep);
+  background: var(--tansei-wash);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 5px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.quiz-toggle:hover { border-color: var(--tansei); }
+
+.vocab-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.vocab-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--paper-deep);
+  vertical-align: top;
+}
+.vocab-table tr:last-child td { border-bottom: none; }
+.vocab-table .w {
+  font-family: "Shippori Mincho", serif;
+  font-size: 17px;
+  font-weight: 700;
+  width: 38%;
+}
+.vocab-table .r { color: var(--tansei-deep); font-size: 13.5px; width: 26%; }
+.vocab-table .m { color: var(--ink-soft); font-size: 14.5px; }
+
+.quiz-on .vocab-table .m { color: transparent; text-shadow: none; }
+.quiz-on .vocab-table .m::before {
+  content: "点击整行显示";
+  color: #C9C2B2;
+  font-size: 12px;
+}
+.quiz-on .vocab-table tr { cursor: pointer; }
+.quiz-on .vocab-table tr.revealed .m { color: var(--ink-soft); }
+.quiz-on .vocab-table tr.revealed .m::before { content: none; }
+
+/* grammar cards */
+.gcard {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+.gcard h3 {
+  font-family: "Shippori Mincho", serif;
+  font-size: 17.5px;
+  font-weight: 700;
+  color: var(--tansei-deep);
+  margin-bottom: 8px;
+  padding-left: 12px;
+  border-left: 3px solid var(--tansei);
+}
+.gcard p { font-size: 15px; color: var(--ink); margin-bottom: 12px; }
+
+.ex {
+  background: var(--paper);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 8px;
+}
+.ex .jp {
+  font-family: "Shippori Mincho", serif;
+  font-size: 17px;
+  line-height: 2.3;
+}
+.ex .cn { font-size: 13.5px; color: var(--ink-soft); margin-top: 2px; }
+
+ruby rt {
+  font-size: 10px;
+  color: var(--tansei-deep);
+  font-family: "Zen Kaku Gothic New", sans-serif;
+}
+
+/* footer nav */
+.day-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 0 24px;
+  flex-wrap: wrap;
+}
+.nav-link {
+  font-size: 14.5px;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+}
+.nav-link:hover { border-color: var(--tansei); }
+.nav-link.ghost { visibility: hidden; }
+
+.stamp-btn {
+  font-family: "Shippori Mincho", serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--hanko);
+  border: none;
+  border-radius: 999px;
+  padding: 13px 30px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.stamp-btn:hover { transform: translateY(-2px); }
+.stamp-btn.done {
+  background: #fff;
+  color: var(--hanko);
+  border: 2px solid var(--hanko);
+  cursor: default;
+  transform: none;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 26px 20px 44px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+.site-footer .serif { color: var(--tansei-deep); }
+
+/* 全部集齐的彩蛋横幅 */
+.complete-banner {
+  margin: 24px 0 0;
+  border: 2px solid var(--hanko);
+  border-radius: var(--radius);
+  background: var(--hanko-soft);
+  color: var(--hanko);
+  font-family: "Shippori Mincho", serif;
+  font-weight: 700;
+  font-size: 17px;
+  text-align: center;
+  padding: 18px 20px;
+}
+
+@media (max-width: 640px) {
+  .cover { flex-direction: row; min-height: auto; padding-top: 40px; }
+  .cover-title { font-size: 52px; }
+  .day-head { gap: 16px; }
+  .vocab-table .w { width: 42%; font-size: 15.5px; }
+  .vocab-table td { padding: 9px 10px; }
+  .cover-hanko { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
