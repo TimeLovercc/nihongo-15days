@@ -3,7 +3,7 @@
 写给未来的东大生的 15 天日语入门手册:每天一页,一组单词 + 三个语法 + 一句应援。
 学完一天盖一个红章(スタンプラリー),15 个章集满,日语的地基就打好了。
 
-**在线阅读:** https://timelovercc.github.io/nihongo-15days/
+**在线阅读:** https://zhimeng.page/nihongo-15days/
 
 - 纯静态页面(HTML/CSS/JS),无构建步骤
 - 内容都在 `data.js`:15 天 × 单词表 + 语法卡(带假名注音例句)+ 每日应援语
